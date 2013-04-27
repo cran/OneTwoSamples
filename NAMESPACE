@@ -1,0 +1,22 @@
+exportPattern("^[[:alpha:]]+")
+
+## export functions 
+export(data_outline,
+	detail,
+	interval_estimate1,
+	interval_estimate2,
+	interval_estimate3,        
+	interval_estimate4,                        
+	interval_estimate5,      
+	interval_var1,        
+	interval_var2,     
+	interval_var3,      
+	interval_var4,   
+	mean_test1,     
+	mean_test2,          
+	one_sample,
+	one_two_sample,
+	p_value,
+	var_test1,
+	var_test2
+)
