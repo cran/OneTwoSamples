@@ -15,8 +15,8 @@ In this package, we introduce an R function one_two_sample() which can deal with
 \tabular{ll}{
 Package: \tab OneTwoSamples\cr
 Type: \tab Package\cr
-Version: \tab 1.0-1\cr
-Date: \tab 2013-04-27\cr
+Version: \tab 1.0-2\cr
+Date: \tab 2013-05-13\cr
 License: \tab GPL (>= 2)\cr
 }
 The most important functions are: one_two_sample() and one_sample().

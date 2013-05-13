@@ -5,7 +5,9 @@ if (side<0) alternative = "less"
 else if (side==0) alternative = "two.sided"
 else alternative = "greater"
 
+graphics.off()
 if (is.null(y)){ ## One sample
+	attr(x, "DNAME") = deparse(substitute(x))
 	result = one_sample(x, mu = mu[1], sigma = sigma[1], side = side, alpha = alpha)
 }
 else{ ## Two samples
@@ -23,28 +25,23 @@ else{ ## Two samples
 		one_sample_y = one_sample(y, mu = mu[2], sigma = sigma[2], side = side, alpha = alpha)
 		
 		cat("\nInterval estimation and test of hypothesis of mu1-mu2\n")
-		if (n1 == n2){
-			cat("\nInterval estimation and test of hypothesis: t.test(), when sigma is unknown\n")
-			a = b = t.test(x-y, alternative = alternative, conf.level = 1-alpha); show(a)
+		if (all(sigma>=0)){ ## sigma1, sigma2 are known
+			cat("\nInterval estimation: interval_estimate5()\n")
+			a = interval_estimate5(x, y, sigma = sigma, side = side, alpha = alpha); show(a)
+			cat("\nTest of hypothesis: mean_test2()\n")
+			b = mean_test2(x, y, sigma = sigma, side = side); show(b)
 		}
 		else{
-			if (all(sigma>=0)){ ## sigma1, sigma2 are known
-				cat("\nInterval estimation: interval_estimate5()\n")
-				a = interval_estimate5(x, y, sigma = sigma, side = side, alpha = alpha); show(a)
-				cat("\nTest of hypothesis: mean_test2()\n")
-				b = mean_test2(x, y, sigma = sigma, side = side); show(b)
+			if (var.equal ==  TRUE){ ## sigma1=sigma2=sigma unknown
+				cat("\nInterval estimation and test of hypothesis: t.test()\n")
+				a = b = t.test(x, y, alternative = alternative, var.equal = var.equal, conf.level = 1-alpha); show(a)
 			}
-			else{
-				if (var.equal ==  TRUE){ ## sigma1=sigma2=sigma unknown
-					cat("\nInterval estimation and test of hypothesis: t.test()\n")
-					a = b = t.test(x, y, alternative = alternative, var.equal = var.equal, conf.level = 1-alpha); show(a)
-				}
-				else{ ## sigma1 != sigma2 unknown
-					cat("\nInterval estimation and test of hypothesis: t.test()\n")
-					a = b = t.test(x, y, alternative = alternative, var.equal = var.equal, conf.level = 1-alpha); show(a)
-				}
+			else{ ## sigma1 != sigma2 unknown
+				cat("\nInterval estimation and test of hypothesis: t.test()\n")
+				a = b = t.test(x, y, alternative = alternative, var.equal = var.equal, conf.level = 1-alpha); show(a)
 			}
 		}
+
 				
 		cat("\nInterval estimation and test of hypothesis of sigma1^2/sigma2^2\n")
 		if (all(mu < Inf)){ ## mu1, mu2 are known

@@ -19,7 +19,7 @@ A numeric vector.
   \item{mu}{
 \code{mu} plays two roles. 
 
-In two sided or one sided interval estimation of \code{sigma^2} of one normal sample, \code{mu} is the population mean. When it is known, input it, and the function computes the interval endpoints using a chi-square distribution with degree of freedom \code{n}. When it is unknown, ignore it, and the function computes the interval endpoints using a chi-square distribution with degree of freedom \code{n-1}.
+In two sided or one sided interval estimation (or test of hypothesis) of \code{sigma^2} of one normal sample, \code{mu} is the population mean. When it is known, input it, and the function computes the interval endpoints (or chi-square statistic) using a chi-square distribution with degree of freedom \code{n}. When it is unknown, ignore it (the default), and the function computes the interval endpoints (or chi-square statistic) using a chi-square distribution with degree of freedom \code{n-1}.
 
 In two sided or one sided test of hypothesis of \code{mu} of one normal sample, \code{mu} is \code{mu0} in the null hypothesis, and \code{mu0 = if (mu < Inf) mu else 0}.
 }
@@ -27,13 +27,13 @@ In two sided or one sided test of hypothesis of \code{mu} of one normal sample, 
   \item{sigma}{
 \code{sigma} plays two roles. 
 
-In two sided or one sided interval estimation of \code{mu} of one normal sample, \code{sigma} is the standard deviation of the population. \code{sigma>=0} indicates it is known, \code{sigma<0} indicates it is unknown. Default to unknown standard deviation.
+In two sided or one sided interval estimation (or test of hypothesis) of \code{mu} of one normal sample, \code{sigma} is the standard deviation of the population. \code{sigma>=0} indicates it is known, and the function computes the interval endpoints (or \code{Z} statistic) using a standard normal distribution. \code{sigma<0} indicates it is unknown, and the function computes the interval endpoints (or \code{T} statistic) using a \code{t} distribution with degree of freedom \code{n-1}. Default to unknown standard deviation.
 
 In two sided or one sided test of hypothesis of \code{sigma^2} of one normal sample, \code{sigma} is \code{sigma0} in the null hypothesis. Default is 1, i.e., \code{H0: sigma^2 = 1}.
 }
 
   \item{side}{
-\code{side} plays four roles. 
+\code{side} plays two roles and is used in four places. 
 
 In two sided or one sided interval estimation of \code{mu} of one normal sample, \code{side} is a parameter used to control whether to compute two sided or one sided interval estimation. When computing the one sided upper limit, input \code{side = -1}; when computing the one sided lower limit, input \code{side = 1}; when computing the two sided limits, input \code{side = 0} (default). 
 

@@ -3,7 +3,7 @@ one_sample <- function(x, mu = Inf, sigma = -1, side = 0, alpha = 0.05){
 ## 
 ## Descriptive statistics, plot
 ## 
-DNAME <- deparse(substitute(x))
+DNAME = if (!is.null(attr(x, "DNAME"))) attr(x, "DNAME") else deparse(substitute(x))
 cat(paste("quantile of ", DNAME, sep = "")); cat("\n"); print(quantile(x))
 cat(paste("data_outline of ", DNAME, sep = "")); cat("\n"); print(data_outline(x))
 
@@ -19,20 +19,23 @@ else {
 }
 
 ## Histograms with density estimation curve and normal density curve
-hist(x, freq = FALSE)
-lines(density(x),col="blue",lty = 1)
 w<-seq(min(x),max(x),length.out = 51)
+Vector = c(density(x)$y, dnorm(w, mean(x), sd(x)))
+ylim = c(min(Vector), max(Vector))
+
+dev.new(); hist(x, freq = FALSE, ylim = ylim, main = paste("Histogram of" , DNAME), xlab = DNAME)
+lines(density(x),col="blue",lty = 1)
 lines(w, dnorm(w, mean(x), sd(x)), col="red",lty = 2)
 leg.txt = c("Density estimation curve","Normal density curve")
 legend("topleft",legend = leg.txt,lty = 1:2,col = c('blue','red'))
 
 ## Empirical cumulative distribution function (ECDF) vs normal cdf
-plot(ecdf(x),verticals = TRUE, do.p = FALSE)
+dev.new(); plot(ecdf(x),verticals = TRUE, do.p = FALSE, main = paste("ecdf(" , DNAME, ")", sep = ""), xlab = DNAME, ylab = paste("Fn(" , DNAME, ")", sep = ""))
 w<-seq(min(x),max(x),length.out = 51)
 lines(w, pnorm(w, mean(x), sd(x)), col="red")
 
 ## QQ plot
-qqnorm(x); qqline(x)
+dev.new(); qqnorm(x); qqline(x)
 
 ## 
 ## Interval estimation and test of hypothesis

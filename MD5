@@ -1,4 +1,5 @@
-1188e1ba77890bb87b5cc182cef3f91c *DESCRIPTION
+21c4de83b8a6cb38ec4dd211ea3f7f3d *ChangeLog
+cfc567ae58c784eb3d87df989805a7b8 *DESCRIPTION
 e9be0cde7b3e30e0433c453e1e952c35 *NAMESPACE
 9e217e57a1f5682e84eeb2449c942cb8 *R/data_outline.R
 12dc820424f29dc16671ced49303037b *R/detail.R
@@ -13,12 +14,12 @@ ff3be5e25e5cd4e257129d1e76bdf486 *R/interval_var1.R
 9753a3b7fcc3a4fa4fffa099b135a40c *R/interval_var4.R
 80adff1209c478476492042d5f377c7b *R/mean_test1.R
 3f295680f383ae0850d39c03e4d72450 *R/mean_test2.R
-6665a11d222cb900891a24f565d916fc *R/one_sample.R
-1d25830d838cd6b4ceca786b61aabbe3 *R/one_two_sample.R
+5e27b4bb05ed4b59ec482400551843d0 *R/one_sample.R
+9c5c8fbd30478d625ef45108c42ba182 *R/one_two_sample.R
 f6f5011791d85697a796931c4580ab19 *R/p_value.R
 c0b9be4f7ae421b5ede57e865f417eff *R/var_test1.R
 01aecc6271a53758f9d5d023909dc158 *R/var_test2.R
-037ae572acbc69cba06879c7f6ecfb9f *man/OneTwoSamples-package.Rd
+8199910101af20daac3e82ff07e44745 *man/OneTwoSamples-package.Rd
 ab0cd0ab5d635cc499aa09e379a48b80 *man/data_outline.Rd
 00c111885823050c86b713d133e9ccd6 *man/detail.Rd
 add0797675d4a0e976278b146d0b2c1d *man/interval_estimate1.Rd
@@ -32,8 +33,9 @@ a93fce885ea5f59d4626b5d4bc3eaaff *man/interval_var1.Rd
 40f7fb93b95ce111ba3ed34f72ecf6f3 *man/interval_var4.Rd
 a600f509993f1f47390f510fe06e0ec8 *man/mean_test1.Rd
 914da1654cb77c3a209a1aed7d3d7742 *man/mean_test2.Rd
-6c7e9233db2a1c0d924f32df6a6adda0 *man/one_sample.Rd
-b8c8ec52ce6b0ca3e7bcce6aba8258ae *man/one_two_sample.Rd
+d533ff00e10326d26aa1307e30e9fbc9 *man/one_sample.Rd
+706a3133af0bced206b070346782628c *man/one_two_sample.Rd
 e5dbe6853b706e594b1c303a160bf88e *man/p_value.Rd
 11169837dc8833d68eb4d808f0201d0f *man/var_test1.Rd
 7ee3ad3e32e20c67fd3f552de3fa0d1f *man/var_test2.Rd
+375660e83e3a50b619d5dde36b7af6a3 *tests/tests_OneTwoSamples.R
