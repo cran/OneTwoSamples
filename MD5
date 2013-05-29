@@ -1,5 +1,5 @@
-21c4de83b8a6cb38ec4dd211ea3f7f3d *ChangeLog
-cfc567ae58c784eb3d87df989805a7b8 *DESCRIPTION
+40e2bbacbb12ee9bb07ee4ffe272adc3 *ChangeLog
+e7f2b09da73d6602ae7071a93ddd4619 *DESCRIPTION
 e9be0cde7b3e30e0433c453e1e952c35 *NAMESPACE
 9e217e57a1f5682e84eeb2449c942cb8 *R/data_outline.R
 12dc820424f29dc16671ced49303037b *R/detail.R
@@ -19,7 +19,10 @@ ff3be5e25e5cd4e257129d1e76bdf486 *R/interval_var1.R
 f6f5011791d85697a796931c4580ab19 *R/p_value.R
 c0b9be4f7ae421b5ede57e865f417eff *R/var_test1.R
 01aecc6271a53758f9d5d023909dc158 *R/var_test2.R
-8199910101af20daac3e82ff07e44745 *man/OneTwoSamples-package.Rd
+bf9368be7b0721e9e93bacec71cb4bf6 *inst/doc/OneTwoSamples.R
+ced4773d48f720bf7bacd405707aeafe *inst/doc/OneTwoSamples.Rnw
+e3e8c5c37a2788a4cca12811d0a8d4c9 *inst/doc/OneTwoSamples.pdf
+52003c4ce0f0f6462e2052e7e8b35f92 *man/OneTwoSamples-package.Rd
 ab0cd0ab5d635cc499aa09e379a48b80 *man/data_outline.Rd
 00c111885823050c86b713d133e9ccd6 *man/detail.Rd
 add0797675d4a0e976278b146d0b2c1d *man/interval_estimate1.Rd
@@ -39,3 +42,8 @@ e5dbe6853b706e594b1c303a160bf88e *man/p_value.Rd
 11169837dc8833d68eb4d808f0201d0f *man/var_test1.Rd
 7ee3ad3e32e20c67fd3f552de3fa0d1f *man/var_test2.Rd
 375660e83e3a50b619d5dde36b7af6a3 *tests/tests_OneTwoSamples.R
+ced4773d48f720bf7bacd405707aeafe *vignettes/OneTwoSamples.Rnw
+e8e5526f56d58eb1d04cc4e80c976f01 *vignettes/RnwToTex.R
+99e64dcf614b6409b6db53e307226631 *vignettes/flowchart.pdf
+85c1e1ca5a6ae3d01b13f9455d9af912 *vignettes/mybib.bib
+fb9fb2aa26d9b8f1e4e856d9351a7e82 *vignettes/tabu.sty

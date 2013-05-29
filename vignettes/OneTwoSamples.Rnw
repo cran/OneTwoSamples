@@ -1,0 +1,524 @@
+% -*- TeX -*- -*- Soft -*-
+\documentclass[article,shortnames,nojss]{jss}
+%\VignetteIndexEntry{One and Two Samples Using Only an R Function}
+%\VignetteDepends{}
+%\VignetteKeywords{one and two samples, interval estimation, hypothesis testing, mean, variance, R}
+%\VignettePackage{OneTwoSamples}
+\usepackage{thumbpdf}
+\usepackage{amssymb}
+\usepackage{pifont}
+\usepackage{tabu}
+\usepackage{multirow}
+\usepackage{fancyvrb}
+\usepackage{longtable}
+\usepackage{graphicx}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% declarations for jss.cls %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% almost as usual
+\author{Ying-Ying Zhang\\Chongqing University}
+\title{One and Two Samples Using Only an \proglang{R} Function
+\thanks{The research was supported by Natural Science Foundation Project of CQ
+CSTC CSTC2011BB0058.}}
+
+
+%% for pretty printing and a nice hypersummary also set:
+\Plainauthor{Ying-Ying Zhang} %% comma-separated
+\Plaintitle{One and Two Samples Using Only an R Function} %% without formatting
+\Shorttitle{One and Two Samples} %% a short title (if necessary)
+
+%% an abstract and keywords
+\Abstract{We create an R function \code{one\_two\_sample()} which
+deals with one and two (normal) samples. For one normal sample
+\code{x}, the function reports descriptive statistics, plot,
+interval estimations and hypothesis testings of the means and
+variances of \code{x}. For one abnormal sample \code{x}, the
+function reports descriptive statistics, plot, two sided interval
+estimation of the mean of \code{x}. For two normal samples \code{x}
+and \code{y}, the function reports descriptive statistics, plot,
+interval estimations and hypothesis testings of the means and
+variances of \code{x} and \code{y}, respectively. It also reports
+interval estimations and hypothesis testings of the difference of
+the means of \code{x} and \code{y} and the ratio of the variances of
+\code{x} and \code{y}, tests whether \code{x} and \code{y} are from
+the same population, finds the correlation coefficient of \code{x}
+and \code{y} if they have the same length. The function is in a
+created R package \pkg{OneTwoSamples} which is available on CRAN.}
+
+\Keywords{one and two samples, interval estimation, hypothesis
+testing, mean, variance, \proglang{R}}
+
+\Plainkeywords{one and two samples, interval estimation,
+hypothesis testing, mean, variance, R} %% without formatting
+%% at least one keyword must be supplied
+
+%% publication information
+%% NOTE: Typically, this can be left commented and will be filled out by the technical editor
+%% \Volume{13}
+%% \Issue{9}
+%% \Month{September}
+%% \Year{2004}
+%% \Submitdate{2004-09-29}
+%% \Acceptdate{2004-09-29}
+
+%% The address of (at least) one author should be given
+%% in the following format:
+\Address{
+  Ying-Ying Zhang\\
+  Department of Statistics and Actuarial Science\\
+  College of Mathematics and Statistics\\
+  Chongqing University\\
+  Chongqing, China\\
+  E-mail: \email{robertzhangyying@qq.com}\\
+  URL: \url{http://baike.baidu.com/view/7694173.htm}
+}
+%% It is also possible to add a telephone and fax number
+%% before the e-mail in the following format:
+%% Telephone: +43/1/31336-5053
+%% Fax: +43/1/31336-734
+
+%% for those who use Sweave please include the following line (with % symbols):
+%% need no \usepackage{Sweave.sty}
+
+%% end of declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Sweave options for the complete document
+%% \SweaveOpts{prefix.string=OneTwoSamples}
+\SweaveOpts{prefix.string=OneTwoSamples}
+\begin{document}
+
+%% include your article here, just as usual
+%% Note that you should use the \pkg{}, \proglang{} and \code{} commands.
+%% Note: If there is markup in \(sub)section, then it has to be escape as above.
+
+\section{Introduction}
+R software \citep{RDevelopmentCoreTeam:11} has become more and more
+popular among researchers due to its freeness, handy and powerful
+programming language, coherent statistical analysis tools, superior
+statistical charting and many other advantages. The extensive data
+from industrial productions, financial economics, medical
+experiments and many other aspects, may result in one or two
+samples. First, we are interested in whether it is or they are
+normal. For one normal sample \code{x}, we are further interested in
+its descriptive statistics, plots (the histogram, the empirical
+cumulative distribution function (ECDF), the QQ plot), interval
+estimations and hypothesis testings of the means and variances of
+\code{x}. For two normal samples \code{x} and \code{y}, except for
+the descriptive statistics, plots, interval estimations and
+hypothesis testings of the means and variances of \code{x} and
+\code{y}, respectively. We are also interested in interval
+estimations and hypothesis testings of the difference of the means
+of \code{x} and \code{y} and the ratio of the variances of \code{x}
+and \code{y}, whether \code{x} and \code{y} are from the same
+population, and the correlation coefficient of \code{x} and \code{y}
+if they have the same length. All these interested information can
+be obtained by implementing one R function
+\code{one\_two\_sample()}, which is in a created R package
+\pkg{OneTwoSamples} available on CRAN \citep{Zhang:13}.\par
+Statistical inferences are main contents of mathematical statistics.
+Parametric estimation and hypothesis testing are two classical
+methods widely used in statistical inferences. They are treated in
+many statistics textbooks \citep{Casella-Berger:02, DeCoursey:03,
+Freedman-Pisani-Purves:07, McClave-Benson-Sincich:08, Ross:09,
+Soong:04, Walpole-Myers-Myers-Ye:11, Xue-Chen:07,
+Yang-Liu-Zhong:04}. It is well known that the R built-in function
+\code{t.test()} can implement the interval estimation and hypothesis
+testing of one and two normal populations' mean. However,
+\code{t.test()} can neither accomplish those of the one normal
+population's mean when the population's variance is known, nor
+accomplish those of the two normal populations' mean when the
+populations' variances are known. Another R built-in function,
+\code{var.test()}, can implement the interval estimation and
+hypothesis testing of two normal populations' variances. However,
+\code{var.test()} can neither accomplish those of the one normal
+population's variance, nor accomplish those of the two normal
+populations' variances when the populations' means are known.
+\cite{Xue-Chen:07} write twelve functions to implement all the
+interval estimations and hypothesis testings of the means and
+variances of one and two normal populations. See Table 1. In the
+table, the functions with blue text are superior to others since
+they still work when \code{mu} or \code{sigma} is known. `\ding{51}'
+denotes the function can handle this case, while `\ding{53}'
+indicates it can not. Most of the functions can compute both one and
+two sided interval estimation and hypothesis testing except for
+those marked with `two sided'. The functions listed above are
+applicable for normal sample(s). As for an abnormal sample,
+\code{interval\_estimate3()} can implement the two sided interval
+estimation of the mean no matter the variance is known or not.
+
+However, it is burdensome to remember and apply the functions in
+Table 1 in a flexible way. \cite{Zhang-Wei:13} integrate them into
+one R function \code{IntervalEstimate\_ TestOfHypothesis()}. Users
+only need to input the sample(s) and set the parameters (\code{test,
+mu, sigma, var.equal, ratio, side, alpha}) as needed. It is
+convenient for users who merely care about the interval estimation
+and hypothesis testing of the mean or variance. The function
+\code{one\_two\_sample()} differs from
+\code{IntervalEstimate\_TestOfHypothesis()} in many ways. See Table
+2.
+
+\begin{table}
+\caption{The functions used in interval estimations and hypothesis
+testings of the means and variances of one and two normal samples.}
+{\scriptsize
+\begin{tabu}
+{|X[1.2c,m]|X[1.95c,m]X[0.8c,m]X[1.15c,m]|X[1.95c,m]X[1.5c,m]X[1.6c,m]X[1.6c,m]|}\hline
+& \multicolumn{3}{c|}{\textbf{one sample}}&
+\multicolumn{4}{c|}{\textbf{two samples}}\\\hline \textbf{mu}&
+functions & sigma known & sigma unknown & functions & sigma1,sigma2
+known & sigma1,sigma2 ($=$)unknown & sigma1,sigma2 ($!=$)unknown
+\\\hline \multirow{3}{1.2cm}[2mm]{\centering interval
+estimation}&\code{interval\_estimate1()} (two sided)&\ding
+{51}&\ding {51}&\code{interval\_estimate2()} (two sided)&\ding
+{51}&\ding {51} &\ding {51}\\\cline{2-8}
+&\textcolor{blue}{\code{interval\_estimate4()}}&\ding {51}&\ding
+{51}&\textcolor{blue}{\code{interval\_estimate5()}}&\ding {51}&\ding
+{51} &\ding {51}\\\cline{2-8} &\code{t.test()}&\ding {53}&\ding
+{51}&\code{t.test()}&\ding {53}&\ding {51} &\ding {51}\\\hline
+\multirow{2}{1.2cm}[-1mm]{\centering hypothesis testing}&
+\textcolor{blue}{\code{mean\_test1()}} &\ding {51} & \ding {51}&
+\textcolor{blue}{\code{mean\_test2()}} &\ding {51} & \ding {51}
+&\ding {51}\\\cline{2-8} &\code{t.test()}&\ding {53}&\ding
+{51}&\code{t.test()}&\ding {53}&\ding {51}&\ding {51}\\\hline
+\textbf{sigma}&functions & mu known & mu unknown & functions & mu1
+\& mu2 known & mu1 or mu2 unknown& \\\hline
+\multirow{3}{1.2cm}[2mm]{\centering interval
+estimation}&\code{interval\_var1()} (two sided)&\ding {51}&\ding
+{51}&\code{interval\_var2()} (two sided)&\ding {51}&\ding {51}&
+\\\cline{2-8} &\textcolor{blue}{\code{interval\_var3()}}&\ding
+{51}&\ding {51}&\textcolor{blue}{\code{interval\_var4()}}&\ding
+{51}&\ding {51}& \\\cline{2-8} & & & &\code{var.test()}&\ding
+{53}&\ding {51}& \\\hline \multirow{2}{1.2cm}[-1mm]{\centering
+hypothesis testing}& \textcolor{blue}{\code{var\_test1()}} &\ding
+{51} & \ding {51}& \textcolor{blue}{\code{var\_test2()}} &\ding {51}
+& \ding {51} & \\\cline{2-8} & & & &\code{var.test()}&\ding
+{53}&\ding {51}& \\\hline
+\end{tabu}
+}
+\end{table}
+
+\begin{table}
+\footnotesize \caption{Differences between two functions.}
+{\begin{tabu}{|X|X[2.5l]|X[2.5l]|}\hline
+&\multicolumn{1}{c|}{\code{one\_two\_sample()}}&
+\multicolumn{1}{c|}{\code{IntervalEstimate\_TestOfHypothesis()}}\\\hline
+Orientation& Deal with one or two (normal) samples. Report
+descriptive statistics, plots, interval estimations and hypothesis
+testings of the means and variances of one or two normal samples.
+For two samples, test whether \code{x} and y are from the same
+population, find the correlation coefficient of \code{x} and
+\code{y} if they have the same length.& Implement interval
+estimation and hypothesis testing of the mean or variance of one or
+two normal samples.\\\hline Outputs of interval estimation and
+hypothesis testing & One normal sample:\newline Interval estimation
+and hypothesis testing of mu AND sigma.\newline
+
+Two normal samples:\newline Interval estimation and hypothesis
+testing of mu AND sigma of \code{x} and y, respectively.\newline
+Interval estimations and hypothesis testings of the difference of
+the means of \code{x} and y AND the ratio of the variances of
+\code{x} and y. & One normal sample:\newline Interval estimation and
+hypothesis testing of mu OR sigma.\newline
+
+Two normal samples:\newline Interval estimation and hypothesis
+testing of the difference of the means of \code{x} and y OR the
+ratio of the variances of \code{x} and y.\newline
+ \\\hline
+Call functions of interval estimation and hypothesis testing&
+Directly call the following functions\newline according to the input
+parameters:\newline \code{interval\_estimate4(),
+interval\_estimate5()},\newline \code{mean\_test1(), mean\_test2(),
+interval\_var3(), interval\_var4(), var\_test1(),
+var\_test2(),}\newline \code{t.test(), var.test().} & Make up the
+following four functions,\newline and call them according to the
+input\newline parameters:\newline \code{single\_mean(),
+single\_var(), double\_mean(), double\_var().}\newline
+\\\hline
+Availability&An R package \pkg{OneTwoSamples} available on
+CRAN.&Through email to the author.\\\hline
+\end{tabu}}
+\end{table}
+
+\section[R function: onetwosample]{R function: \code{one\_two\_sample()}}
+The function \code{one\_two\_sample()} deals with one or two
+(normal) samples. In this section, we will introduce the program
+flowchart and usage of \code{one\_two\_sample()} in detail.
+\subsection{Program flowchart}
+To make the structure of the R function \code{one\_two\_sample()}
+easy to understand, we draw a program flowchart with Microsoft
+Office Visio 2007. See Figure~\ref{fig:flowchart}.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=\textwidth]{flowchart}
+\end{center}
+\vspace{-5mm} \caption{The program flowchart of
+\code{one\_two\_sample()}.} \label{fig:flowchart}
+\end{figure}
+
+\subsection{Usage}
+The usage of  \code{one\_two\_sample()} is as follows:
+\vspace{3mm}\\
+\code{one\_two\_sample(x, y = NULL, mu = c(Inf, Inf), sigma = c(-1, -1), \\
+\mbox{\qquad\qquad}var.equal = FALSE, ratio = 1, side=0, alpha=0.05)}
+\vspace{2mm}\\
+\code{x}: a (non-empty) numeric vector of sample data values.\\
+\code{y}: an optional non-empty numeric vector of sample data values. The default is NULL, i.e., there is only one sample. In this case, we can also use the function \code{one\_sample()}.\\
+\code{mu}: if \code{y = NULL}, i.e., there is only one sample. See the argument \code{mu} in \code{one\_sample()}. For two normal samples \code{x} and \code{y}, \code{mu} plays one role: the population means. However, \code{mu} is used in two places: one is the two sided or one sided interval estimation of \code{sigma1\^{}2 / sigma2\^{}2} of two normal samples, another is the two sided or one sided hypothesis testing of \code{sigma1\^{}2} and \code{sigma2\^{}2} of two normal samples. When \code{mu} is known, input it, and the function computes the interval endpoints (or the F value) using an F distribution with degree of freedom \code{(n1, n2)}. When it is unknown, ignore it, and the function computes the interval endpoints (or the F value) using an F distribution with degree of freedom (\code{n1 - 1}, \code{n2 - 1}).\\
+\code{sigma}: if \code{y = NULL}, i.e., there is only one sample. See the argument \code{sigma} in \code{one\_sample()}. For two normal samples \code{x} and \code{y}, \code{sigma} plays one role: the population standard deviations. However, \code{sigma} is used in two places: one is the two sided or one sided interval estimation of \code{mu1 - mu2} of two normal samples, another is the two sided or one sided hypothesis testing of \code{mu1} and \code{mu2} of two normal samples. When the standard deviations are known, input it, then the function computes the interval endpoints using normal population; when the standard deviations are unknown, ignore it, now we need to consider whether the two populations have equal variances. See \code{var.equal} below.\\
+\code{var.equal}: a logical variable indicating whether to treat the two variances as being equal. If TRUE then the pooled variance is used to estimate the variance otherwise the Welch (or Satterthwaite) approximation to the degrees of freedom is used.\\
+\code{ratio}: the hypothesized ratio of the population variances of \code{x} and \code{y}. It is used in \code{var.test(x, y, ratio = ratio, ...)}, i.e., when computing the interval estimation and hypothesis testing of \code{sigma1\^{}2 / sigma2\^{}2} when \code{mu1} or \code{mu2} is unknown.\\
+\code{side}: if \code{y = NULL}, i.e., there is onl\code{y} one sample. See the argument side in \code{one\_sample()}. For two normal samples \code{x} and \code{y}, \code{sigma} is used in four places: interval estimation of \code{mu1 - mu2}, hypothesis testing of \code{mu1} and \code{mu2}, interval estimation of \code{sigma1\^{}2 / sigma2\^{}2}, hypothesis testing of \code{sigma1\^{}2} and \code{sigma2\^{}2}. In interval estimation of \code{mu1 - mu2} or \code{sigma1\^{}2 / sigma2\^{}2}, \code{side} is a parameter used to control whether to compute two sided or one sided interval estimation. When computing the one sided upper limit, input \code{side = -1} (or a number $<$ 0); when computing the one sided lower limit, input \code{side = 1} (or a number $>$ 0); when computing the two sided limits, input \code{side = 0} (default). In hypothesis testing of \code{mu1} and \code{mu2} or \code{sigma1\^{}2} and \code{sigma2\^{}2}, \code{side} is a parameter used to control two sided or one sided hypothesis testing. When inputting \code{side = 0} (default), the function computes two sided hypothesis testing, and \code{H1: mu1 != mu2} or \code{H1: sigma1\^{}2 != sigma2\^{}2}; when inputting \code{side = -1} (or a number $<$0), the function computes one sided hypothesis testing, and \code{H1: mu1 < mu2} or \code{H1: sigma1\^{}2 < sigma2\^{}2}; when inputting \code{side = 1} (or a number $>$ 0), the function computes one sided hypothesis testing, and \code{H1: mu1 > mu2} or \code{H1: sigma1\^{}2 > sigma2\^{}2}.\\
+\code{alpha}: the significance level, a real number in $[0,1]$.
+Default to 0.05. \code{1 - alpha} is the degree of confidence.\par
+In Table 3, we further illustrate the usage of
+\code{one\_two\_sample()} by examples. All the examples are
+implemented in `\code{tests\_OneTwoSamples.R}' in the `\code{tests}'
+folder of the package \pkg{OneTwoSamples}. In the table, each cell
+is divided into two parts. The upper part illustrates the usage of
+input parameters, and the lower part lists the functions called by
+\code{one\_two\_sample()}.
+
+\begin{table}
+\caption{The usage of \code{one\_two\_sample()}.}
+{\begin{tabu}{|X[c,m]|X[1.6l]|X[1.6l]|}\hline \textbf{One normal
+sample}& \multicolumn{1}{c|}{sigma known} &
+\multicolumn{1}{c|}{sigma unknown} \\\hline \multirow{2}*{mu known}
+& Example 1: x, mu =, sigma =,\newline side = 0, alpha = 0.05 &
+Example 3: x, mu =,\newline side = 0, alpha = 0.05\\\cline{2-3}
+ & \code{interval\_estimate4(),\newline mean\_test1(),\newline interval\_var3(),\newline var\_test1()}&
+ \code{t.test(),\newline interval\_var3(),\newline var\_test1()}\\\hline
+\multirow{2}*{mu unknown}&
+ Example 2: x, sigma =,\newline
+ side = 0, alpha = 0.05&
+ Example 4: x, \newline side = 0, alpha = 0.05\\\cline{2-3}
+& \code{interval\_estimate4(),\newline mean\_test1(),\newline
+interval\_var3(),\newline var\_test1()}& \code{t.test(),\newline
+interval\_var3(),\newline var\_test1()}\\\hline
+\multirow{2}*{\centerline{\textbf{{\footnotesize One abnormal
+sample}}}}& Example 5: x, sigma =, alpha = 0.05& Example 6: x, alpha
+= 0.05\\\cline{2-3} &
+\code{interval\_estimate3()}&\code{interval\_estimate3()}\\\hline
+\textbf{Two normal samples}&\multicolumn{1}{c|}{mu1, mu2 known}&
+\multicolumn{1}{c|}{mu1, mu2 unknown}\\\hline
+\multirow{2}{25mm}{\centering sigma1, sigma2 known}& Example 7: x,
+y, \newline mu = c(,), sigma = c(,),\newline side = 0, alpha = 0.05&
+Example 10: x, y,\newline ratio = 1, sigma = c(,),\newline side = 0,
+alpha = 0.05\\\cline{2-3} &\code{interval\_estimate5(),\newline
+mean\_test2(),\newline interval\_var4(),\newline var\_test2()}&
+\code{interval\_estimate5(),\newline mean\_test2(),\newline
+var.test()}\\\hline \multirow{2}{25mm}{\centering sigma1 $=$ sigma2
+unknown}& Example 8: x, y, \newline mu = c(,), var.equal =
+TRUE,\newline side = 0, alpha = 0.05& Example 11: x, y,\newline
+ratio = 1, var.equal = TRUE,
+\newline side = 0, alpha = 0.05\\\cline{2-3} &\code{t.test(),\newline
+interval\_var4(),\newline var\_test2()}& \code{t.test(),\newline
+var.test()}\\\hline \multirow{2}{25mm}{\centering sigma1 $!=$ sigma2
+unknown}& Example 9: x, y, \newline mu = c(,),\newline side = 0,
+alpha = 0.05& Example 12: x, y,\newline ratio = 1,\newline
+ side = 0, alpha = 0.05\\\cline{2-3}
+&\code{t.test(),\newline interval\_var4(),\newline var\_test2()}&
+\code{t.test(),\newline var.test()}\\\hline
+\end{tabu}}
+\end{table}
+
+\subsection{Practical application}
+As mentioned in Table 2, \code{one\_two\_sample()} call other
+functions according to the input parameters. Thus the validity of
+\code{one\_two\_sample()} replies on those functions. In this
+section, we apply the function \code{one\_two\_sample()} to a
+dataset \code{women} in the \pkg{datasets} package.\par To use the
+function \code{one\_two\_sample()}, we should first:
+\code{library(`OneTwoSamples')}. Note: the outputs explanations of a
+specific function can be obtained through the help page, for
+example, `\code{?data\_outline}', `\code{?t.test()}'.
+
+%% Input (echo) FALSE, Output (results) FALSE
+<<label=, echo=FALSE, results=hide>>=
+library('OneTwoSamples')
+@
+
+%% Input (echo) FALSE, Output (results) FALSE
+<<label=, echo=FALSE, results=hide>>=
+?data_outline
+?t.test()
+@
+
+%% Input (echo) TRUE, Output (results) TRUE
+<<label=>>=
+## generate samples x and y
+x = women$height; x
+y = women$weight; y
+@
+
+%% Input (echo) TRUE, Output (results) TRUE
+<<label=>>=
+## operate on one sample
+## one_two_sample(x) is equivalent to one_sample(x)
+one_two_sample(x)
+@
+
+%% Input (echo) TRUE, Output (results) TRUE
+<<label=>>=
+## one_two_sample(y) is equivalent to one_sample(y)
+one_two_sample(y)
+@
+
+%% Input (echo) FALSE, Output (results) FALSE
+<<label=hist_x, echo=FALSE, results=hide, fig=TRUE, include=FALSE>>=
+x = women$height
+## Histograms with density estimation curve and normal density curve
+w<-seq(min(x),max(x),length.out = 51)
+Vector = c(density(x)$y, dnorm(w, mean(x), sd(x)))
+ylim = c(min(Vector), max(Vector))
+
+hist(x, freq = FALSE, ylim = ylim, main = paste("Histogram of x"), xlab = "x")
+lines(density(x),col="blue",lty = 1)
+lines(w, dnorm(w, mean(x), sd(x)), col="red",lty = 2)
+leg.txt = c("Density estimation curve","Normal density curve")
+legend("topleft",legend = leg.txt,lty = 1:2,col = c('blue','red'))
+@
+
+%% Input (echo) FALSE, Output (results) FALSE
+<<label=hist_y, echo=FALSE, results=hide, fig=TRUE, include=FALSE>>=
+y = women$weight
+## Histograms with density estimation curve and normal density curve
+w<-seq(min(y),max(y),length.out = 51)
+Vector = c(density(y)$y, dnorm(w, mean(y), sd(y)))
+ylim = c(min(Vector), max(Vector))
+
+hist(y, freq = FALSE, ylim = ylim, main = paste("Histogram of y"), xlab = "y")
+lines(density(y),col="blue",lty = 1)
+lines(w, dnorm(w, mean(y), sd(y)), col="red",lty = 2)
+leg.txt = c("Density estimation curve","Normal density curve")
+legend("topleft",legend = leg.txt,lty = 1:2,col = c('blue','red'))
+@
+
+%% Input (echo) FALSE, Output (results) FALSE
+<<label=ecdf_x, echo=FALSE, results=hide, fig=TRUE, include=FALSE>>=
+## Empirical cumulative distribution function (ECDF) vs normal cdf
+plot(ecdf(x),verticals = TRUE, do.p = FALSE, main = "ecdf(x)", xlab = "x", ylab = "Fn(x)")
+w<-seq(min(x),max(x),length.out = 51)
+lines(w, pnorm(w, mean(x), sd(x)), col="red")
+@
+
+%% Input (echo) FALSE, Output (results) FALSE
+<<label=ecdf_y, echo=FALSE, results=hide, fig=TRUE, include=FALSE>>=
+## Empirical cumulative distribution function (ECDF) vs normal cdf
+plot(ecdf(y),verticals = TRUE, do.p = FALSE, main = "ecdf(y)", xlab = "y", ylab = "Fn(y)")
+w<-seq(min(y),max(y),length.out = 51)
+lines(w, pnorm(w, mean(y), sd(y)), col="red")
+@
+
+%% Input (echo) FALSE, Output (results) FALSE
+<<label=QQplot_x, echo=FALSE, results=hide, fig=TRUE, include=FALSE>>=
+## QQ plot
+qqnorm(x); qqline(x)
+@
+
+%% Input (echo) FALSE, Output (results) FALSE
+<<label=QQplot_y, echo=FALSE, results=hide, fig=TRUE, include=FALSE>>=
+## QQ plot
+qqnorm(y); qqline(y)
+@
+
+Illustration: The outputs of \code{one\_two\_sample(x)} and
+\code{one\_two\_sample(y)} are listed above. For \code{x}, first the
+function reports descriptive statistics (the quantile of \code{x}
+and the data\_outline of \code{x}). Then in Shapiro-Wilk normality
+test, p-value = 0.7545 $>$ 0.05, so the data \code{x} is from the
+normal population. After that, the 3 plots in the left column of
+Figure~\ref{fig:6_plots} show the histogram, the ECDF, and the QQ
+plot of \code{x}, respectively. The 3 plots all indicate that the
+data \code{x} is from the normal population, in agree with the
+result of Shapiro-Wilk normality test. Finally, the function
+displays interval estimations and hypothesis testings of the means
+and variances of \code{x}. The interval estimation and hypothesis
+testing of \code{mu} call the function \code{t.test()}. We find that
+the 95 percent confidence interval of \code{mu} is \code{[62.52341,
+67.47659]}, the \code{p-value < 2.2e-16 < 0.05}, so reject \code{H0:
+mu = 0} and accept \code{H1: mu != 0}. The interval estimation of
+\code{sigma} calls the function \code{interval\_var3()}. We find
+that the 95 percent confidence interval of sigma is \code{[10.72019,
+49.74483]}. The hypothesis testing of \code{sigma} calls the
+function \code{var\_test1()}. We find that the \code{P\_value = 0 <
+0.05}, so reject \code{H0: sigma2 = 1} and accept \code{H1: sigma2
+!= 1}. The explanations of the outputs of \code{one\_two\_sample(y)}
+are omitted.
+
+\begin{figure}[!htbp]
+%Requires \usepackage{graphicx}
+\centerline{
+\begin{tabular}{c@{\hspace{1pc}}c}
+\includegraphics[width=2.5in]{OneTwoSamples-hist_x}& \includegraphics[width=2.5in]{OneTwoSamples-hist_y}\\
+\includegraphics[width=2.5in]{OneTwoSamples-ecdf_x}& \includegraphics[width=2.5in]{OneTwoSamples-ecdf_y}\\
+\includegraphics[width=2.5in]{OneTwoSamples-QQplot_x}& \includegraphics[width=2.5in]{OneTwoSamples-QQplot_y}
+\end{tabular} }
+\caption{Histogram, ECDF, and QQ plot of \code{x} and \code{y}.}%
+\label{fig:6_plots}%
+\end{figure}
+
+\normalsize
+%% Input (echo) TRUE, Output (results) TRUE
+<<label=>>=
+## operate on two samples
+one_two_sample(x, y)
+@
+
+Illustration: The outputs of \code{one\_two\_sample(x, y)} are
+listed above. The explanations for the former parts of the outputs of \code{one\_two\_sample(x, y)} are omitted since they have
+been listed in the outputs of \code{one\_two\_sample(x)} and
+\code{one\_two\_sample(y)}. The interval estimation and hypothesis
+testing of \code{mu1 - mu2} call the function \code{t.test()}.
+We find that the 95 percent confidence interval of \code{mu1 - mu2} is \code{[-80.54891, -62.91775]}, the \code{p-value =
+6.826e-12 < 0.05}, so reject \code{H0: mu1 = mu2} and accept
+\code{H1: mu1 != mu2}. The interval estimation and hypothesis
+testing of \code{sigma1\^{}2 / sigma2\^{}2} call the function
+\code{var.test()}. We find that the 95 percent confidence interval
+of \code{sigma1\^{}2 / sigma2\^{}2} is \code{[0.02795306,
+0.24799912]}, the \code{p-value = 3.586e-05 < 0.05}, so reject
+\code{H0: sigma1\^{}2 = sigma2\^{}2} and accept \code{H1:
+sigma1\^{}2 != sigma2\^{}2}. We obtain \code{n1 == n2}, i.e.,
+\code{x} and \code{y} have the same length. Three functions
+\code{ks.test()}, \code{binom.test()}, and \code{wilcox.test()} are
+used to test whether \code{x} and \code{y} are from the same
+population. Three p-values are all less than 0.05, so reject
+\code{H0: x and y are from the same population}. The function
+\code{cor.test(x, y, method = c(`pearson', `kendall', `spearman'))}
+is used to find the correlation coefficient of \code{x} and
+\code{y}. Three p-values are all less than 0.05, so reject \code{H0:
+rho = 0 (x, y uncorrelated)}. Thus \code{x} and \code{y} are
+correlated. In fact, \code{x} and \code{y} have nearly \code{1}
+correlation.
+
+\normalsize
+\section{Conclusions}
+The function \code{one\_two\_sample()} can deal with one and two
+(normal) samples. For one normal sample \code{x}, the function
+reports descriptive statistics, plot, interval estimations and
+hypothesis testings of the means and variances of \code{x}. For one
+abnormal sample \code{x}, the function reports descriptive
+statistics, plot, two sided interval estimation of the mean of
+\code{x}. For two normal samples \code{x} and \code{y}, the function
+reports descriptive statistics, plot, interval estimations and
+hypothesis testings of the means and variances of \code{x} and
+\code{y}, respectively. It also reports interval estimations and
+hypothesis testings of the difference of the means of \code{x} and
+\code{y} and the ratio of the variances of \code{x} and \code{y},
+tests whether \code{x} and \code{y} are from the same population,
+finds the correlation coefficient of \code{x} and \code{y} if they
+have the same length. The function is in a created R package
+\pkg{OneTwoSamples} which is available on CRAN. In addition, the
+usage of arguments of \code{one\_two\_sample()} is straightforward.
+It will simplify the users' operations of dealing with one and two
+(normal) samples to a great extent.
+
+\section*{Acknowledgements}
+
+%% \bibliographystyle{jss}
+%% \bibliographystyle{plainnat}
+\bibliography{mybib}
+
+\end{document}
