@@ -33,7 +33,8 @@ The P value.
 }
 
 \references{
-Zhang, Y. Y., Wei, Y. (2013), One and two samples using only an R funtion.
+Zhang, Y. Y., Wei, Y. (2013), One and two samples using only an R funtion,
+\doi{10.2991/asshm-13.2013.29}.
 }
 \author{
 Ying-Ying Zhang (Robert) \email{robertzhangyying@qq.com} 

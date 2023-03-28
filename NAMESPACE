@@ -1,3 +1,12 @@
+importFrom("grDevices", "dev.new", "graphics.off")
+importFrom("graphics", "hist", "legend", "lines")
+importFrom("methods", "show")
+importFrom("stats", "binom.test", "cor.test", "density", "dnorm",
+           "ecdf", "ks.test", "median", "pchisq", "pf", "pnorm", "pt",
+           "qchisq", "qf", "qnorm", "qqline", "qqnorm", "qt",
+           "quantile", "sd", "shapiro.test", "t.test", "var",
+           "var.test", "wilcox.test")
+
 exportPattern("^[[:alpha:]]+")
 
 ## export functions 
