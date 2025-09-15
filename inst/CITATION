@@ -1,0 +1,23 @@
+citHeader("To cite the OneTwoSamples package in publications use:")
+
+titl <- meta$Title
+year <- sub(".*(2[[:digit:]]{3})-.*", "\\1", meta$Date, perl = TRUE)
+vers <- paste("R package version", meta$Version)
+doi <- paste0("10.32614/CRAN.package.", meta$Package)
+urldoi <- paste0("https://doi.org/", doi)
+
+
+bibentry(bibtype="Manual",
+         title = titl,
+         author = c(person(given = "Frederic", family= "Bertrand"),
+	person(given = "Ying-Ying", family= "Zhang (Robert)")),
+         year         = year,
+         note         = vers,
+         url          = "https://github.com/fbertran/OneTwoSamples",
+         doi = doi,
+         textVersion = 
+           paste("Frédéric Bertrand and Ying-Ying Zhang (Robert) (",year ,"). ", 
+                 titl, ", ", vers, ". doi:", doi, ".", sep=""
+           )
+)
+

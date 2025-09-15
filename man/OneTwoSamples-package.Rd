@@ -25,7 +25,7 @@ The most important functions are: one_two_sample() and one_sample().
 \author{
 Ying-Ying Zhang (Robert)
 
-Maintainer: Frederic Bertrand <frederic.bertrand@utt.fr>
+Maintainer: Frederic Bertrand <frederic.bertrand@lecnam.net>
 }
 
 \references{
