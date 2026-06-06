@@ -4,14 +4,19 @@
 %\VignetteDepends{}
 %\VignetteKeywords{one and two samples, interval estimation, hypothesis testing, mean, variance, R}
 %\VignettePackage{OneTwoSamples}
+%\VignetteEngine{utils::Sweave}
 \usepackage{thumbpdf}
 \usepackage{amssymb}
 \usepackage{pifont}
-\usepackage{tabu}
+\usepackage{array}
+\usepackage{tabularx}
 \usepackage{multirow}
 \usepackage{fancyvrb}
 \usepackage{longtable}
 \usepackage{graphicx}
+\renewcommand\tabularxcolumn[1]{m{#1}}
+\newcolumntype{Q}[1]{>{\hsize=#1\hsize\raggedright\arraybackslash}X}
+\newcolumntype{Z}[1]{>{\hsize=#1\hsize\centering\arraybackslash}X}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% declarations for jss.cls %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -72,7 +77,7 @@ hypothesis testing, mean, variance, R} %% without formatting
   Chongqing University\\
   Chongqing, China\\
   E-mail: \email{robertzhangyying@qq.com}\\
-  URL: \url{http://baike.baidu.com/view/7694173.htm}
+  URL: \url{https://baike.baidu.com/item/\%E5\%BC\%A0\%E5\%BA\%94\%E5\%BA\%94}
 }
 %% It is also possible to add a telephone and fax number
 %% before the e-mail in the following format:
@@ -163,8 +168,9 @@ and hypothesis testing of the mean or variance. The function
 \caption{The functions used in interval estimations and hypothesis
 testings of the means and variances of one and two normal samples.}
 {\scriptsize
-\begin{tabu}
-{|X[1.2c,m]|X[1.95c,m]X[0.8c,m]X[1.15c,m]|X[1.95c,m]X[1.5c,m]X[1.6c,m]X[1.6c,m]|}\hline
+\setlength{\tabcolsep}{2pt}
+\begin{tabularx}{\linewidth}
+{|Z{0.817}|Z{1.328}Z{0.545}Z{0.783}|Z{1.328}Z{1.021}Z{1.089}Z{1.089}|}\hline
 & \multicolumn{3}{c|}{\textbf{one sample}}&
 \multicolumn{4}{c|}{\textbf{two samples}}\\\hline \textbf{mu}&
 functions & sigma known & sigma unknown & functions & sigma1,sigma2
@@ -195,13 +201,14 @@ hypothesis testing}& \textcolor{blue}{\code{var\_test1()}} &\ding
 {51} & \ding {51}& \textcolor{blue}{\code{var\_test2()}} &\ding {51}
 & \ding {51} & \\\cline{2-8} & & & &\code{var.test()}&\ding
 {53}&\ding {51}& \\\hline
-\end{tabu}
+\end{tabularx}
 }
 \end{table}
 
 \begin{table}
 \footnotesize \caption{Differences between two functions.}
-{\begin{tabu}{|X|X[2.5l]|X[2.5l]|}\hline
+{\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\linewidth}{|Q{0.5}|Q{1.25}|Q{1.25}|}\hline
 &\multicolumn{1}{c|}{\code{one\_two\_sample()}}&
 \multicolumn{1}{c|}{\code{IntervalEstimate\_TestOfHypothesis()}}\\\hline
 Orientation& Deal with one or two (normal) samples. Report
@@ -238,7 +245,7 @@ single\_var(), double\_mean(), double\_var().}\newline
 \\\hline
 Availability&An R package \pkg{OneTwoSamples} available on
 CRAN.&Through email to the author.\\\hline
-\end{tabu}}
+\end{tabularx}}
 \end{table}
 
 \section[R function: onetwosample]{R function: \code{one\_two\_sample()}}
@@ -283,7 +290,8 @@ input parameters, and the lower part lists the functions called by
 
 \begin{table}
 \caption{The usage of \code{one\_two\_sample()}.}
-{\begin{tabu}{|X[c,m]|X[1.6l]|X[1.6l]|}\hline \textbf{One normal
+{\setlength{\tabcolsep}{3pt}
+\begin{tabularx}{\linewidth}{|Z{0.5}|Q{1.25}|Q{1.25}|}\hline \textbf{One normal
 sample}& \multicolumn{1}{c|}{sigma known} &
 \multicolumn{1}{c|}{sigma unknown} \\\hline \multirow{2}*{mu known}
 & Example 1: x, mu =, sigma =,\newline side = 0, alpha = 0.05 &
@@ -321,7 +329,7 @@ alpha = 0.05& Example 12: x, y,\newline ratio = 1,\newline
  side = 0, alpha = 0.05\\\cline{2-3}
 &\code{t.test(),\newline interval\_var4(),\newline var\_test2()}&
 \code{t.test(),\newline var.test()}\\\hline
-\end{tabu}}
+\end{tabularx}}
 \end{table}
 
 \subsection{Practical application}
@@ -514,6 +522,10 @@ have the same length. The function is in a created R package
 usage of arguments of \code{one\_two\_sample()} is straightforward.
 It will simplify the users' operations of dealing with one and two
 (normal) samples to a great extent.
+
+<<cleanup-rplots, echo=FALSE, results=hide>>=
+unlink(Sys.glob("Rplots*.pdf"))
+@
 
 \section*{Acknowledgements}
 

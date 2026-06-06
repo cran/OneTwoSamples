@@ -1,8 +1,8 @@
 Package: OneTwoSamples
 Type: Package
 Title: Deal with One and Two (Normal) Samples
-Version: 1.2-0
-Date: 2025-09-15
+Version: 1.3-0
+Date: 2026-06-06
 Authors@R: c(
 	person(given = "Frederic", family= "Bertrand", role = c("cre"), email = "frederic.bertrand@lecnam.net", comment = c(ORCID = "0000-0002-0837-8281")),
 	person(given = "Ying-Ying", family= "Zhang (Robert)", role = c("aut")))
@@ -11,7 +11,7 @@ Author: Frederic Bertrand [cre] (ORCID:
   Ying-Ying Zhang (Robert) [aut]
 Maintainer: Frederic Bertrand <frederic.bertrand@lecnam.net>
 Depends: R (>= 3.3), methods
-Suggests: testthat (>= 3.0.0)
+Suggests: testthat (>= 3.0.0), roxygen2
 Description: We introduce an R function
         one_two_sample() which can deal with one and two (normal)
         samples, Ying-Ying Zhang, Yi Wei (2012) <doi:10.2991/asshm-13.2013.29>. 
@@ -29,10 +29,11 @@ License: GPL (>= 2)
 LazyLoad: yes
 Encoding: UTF-8
 Config/testthat/edition: 3
+RoxygenNote: 7.3.3
 URL: https://github.com/fbertran/OneTwoSamples,
         https://fbertran.github.io/OneTwoSamples/
 BugReports: https://github.com/fbertran/OneTwoSamples/issues
 NeedsCompilation: no
-Packaged: 2025-09-15 22:08:29 UTC; bertran7
+Packaged: 2026-06-06 14:55:18 UTC; bertran7
 Repository: CRAN
-Date/Publication: 2025-09-15 22:50:08 UTC
+Date/Publication: 2026-06-06 16:40:02 UTC

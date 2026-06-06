@@ -107,3 +107,9 @@ qqnorm(y); qqline(y)
 one_two_sample(x, y)
 
 
+###################################################
+### code chunk number 13: cleanup-rplots
+###################################################
+unlink(Sys.glob("Rplots*.pdf"))
+
+
